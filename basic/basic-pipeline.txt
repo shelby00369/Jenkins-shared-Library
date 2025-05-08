@@ -1,0 +1,45 @@
+@Library("shared") _
+pipeline{
+    
+    agent{ label "Aryan"}
+    stages{
+        stage("Hello"){
+            steps{
+                script{
+                    hello()
+                }
+            }
+        }
+        stage("Code"){
+            steps{
+                script{
+                    code("https://github.com/shelby00369/Django-notes-updated.git","master")
+                }
+            }
+        }
+        stage("Build"){
+            steps{
+                script{
+                    build("")
+                }
+            
+            }
+        }
+        stage("Push to dockerHub"){
+            steps{
+                echo "This is pushing the image to DockerHub"
+                withCredentials([usernamePassword('credentialsId':"Jendocktoken",passwordVariable:"dockerhubpass",usernameVariable:"dockerHubUser")]){
+                sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}"
+                sh "docker image tag notes-app:latest arthurboy007/notes-app:latest"
+                sh "docker push arthurboy007/notes-app:latest"
+                }
+            }
+        }
+        stage("Deploy"){
+            steps{
+                echo "This is for deploying the app"
+                sh "docker run -d -p 8000:8000 notes-app:latest "
+            }
+        }
+    }
+}
