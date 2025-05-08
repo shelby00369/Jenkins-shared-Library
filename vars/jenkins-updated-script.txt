@@ -1,0 +1,32 @@
+@Library("shared") _
+pipeline {
+    agent { label "Aryan" }
+
+    stages {
+        stage("Hello") {
+            steps {
+                script { hello() }
+            }
+        }
+        stage("Code") {
+            steps {
+                script { code("https://github.com/shelby00369/Django-notes-updated.git", "master") }
+            }
+        }
+        stage("Build") {
+            steps {
+                script { build("") }
+            }
+        }
+        stage("Push to DockerHub") {
+            steps {
+                script { pushToDockerHub() }
+            }
+        }
+        stage("Deploy") {
+            steps {
+                script { deployApp() }
+            }
+        }
+    }
+}
