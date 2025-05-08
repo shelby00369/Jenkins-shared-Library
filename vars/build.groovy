@@ -1,5 +1,4 @@
-def call(String ProjectName, String ImageTag, String DockerHubUser) {
-  echo "This is for building the code"
-  sh "docker build -t ${DockerHubUser}/${ProjectName}:${ImageTag} ."
-  echo "code cloning success"
+def call(String unused) {
+    echo "Building the Docker image"
+    sh "docker build -t notes-app:latest ."
 }
